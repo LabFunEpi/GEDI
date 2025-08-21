@@ -19,7 +19,7 @@ process BOWTIE2_ALIGN {
     module load bowtie2
     module load samtools
     
-    bowtie2 --dovetail --threads $task.cpus -x ${projectDir}/references/bowtie2/${meta.genome} -1 ${fastq_1} -2 ${fastq_2} 2> ${meta.sample}_${meta.replicate}.bowtie2.log | \
+    bowtie2 --dovetail --threads $task.cpus -x ${params.refDir}/bowtie2/${meta.genome} -1 ${fastq_1} -2 ${fastq_2} 2> ${meta.sample}_${meta.replicate}.bowtie2.log | \
         samtools view -b -q 30 - | samtools sort -O BAM - > ${meta.sample}_${meta.replicate}_temp.bam
     samtools index ${meta.sample}_${meta.replicate}_temp.bam
     samtools view -b ${meta.sample}_${meta.replicate}_temp.bam `seq 1 22 | sed 's/^/chr/'` chrX chrY > ${meta.sample}_${meta.replicate}.bam

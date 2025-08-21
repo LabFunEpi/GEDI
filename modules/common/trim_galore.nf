@@ -16,8 +16,15 @@ process TRIM_GALORE {
 
     script:
     """
+   
     module load fastqc
     module load cutadapt
-    /research/bsi/tools/biotools/trim_galore/0.6.5/trim_galore --fastqc --paired ${fastq_1} ${fastq_2} --basename ${meta.sample}_${meta.replicate} --nextseq 20
+   
+    /research/bsi/tools/biotools/trim_galore/0.6.5/trim_galore \\
+        --fastqc \\
+        --paired ${fastq_1} ${fastq_2} \\
+        --basename ${meta.sample}_${meta.replicate} \\
+        --nextseq 20
+   
     """
 }

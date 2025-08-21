@@ -25,13 +25,21 @@ process COUNT_FRAGMENTS {
     
     bedtools bamtobed -bedpe -i matefixed.bam > fragments.bedpe
     
-    awk '\$1==\$4 && \$6-\$2 < 1000 {print \$0}' fragments.bedpe | cut -f 1,2,6 | sort -k1,1 -k2,2n -k3,3n > fragments.bed
+    awk '\$1==\$4 && \$6-\$2 < 1000 {print \$0}' fragments.bedpe | \\
+        cut -f 1,2,6 | \\
+        sort -k1,1 -k2,2n -k3,3n \\
+        > fragments.bed
     
-    bedtools genomecov -bg -i fragments.bed -g ${projectDir}/references/chromsizes/${meta.genome} > ${meta.sample}_${meta.replicate}.bg
+    bedtools genomecov -bg -i fragments.bed \\
+        -g ${params.refDir}/chromsizes/${meta.genome} \\
+        > ${meta.sample}_${meta.replicate}.bg
     
-    bedGraphToBigWig ${meta.sample}_${meta.replicate}.bg ${projectDir}/references/chromsizes/${meta.genome} ${meta.sample}_${meta.replicate}.bw
+    bedGraphToBigWig ${meta.sample}_${meta.replicate}.bg \\
+        ${params.refDir}/chromsizes/${meta.genome} \\
+        ${meta.sample}_${meta.replicate}.bw
     
-    printf 'track type=bigWig name=\"${meta.sample}_${meta.replicate}_bw\" bigDataUrl=cloudpath/${meta.sample}_${meta.replicate}.bw description=${meta.sample}_${meta.replicate} visibility=full smoothingWindow=4 windowingFunction=mean maxHeightPixels=100:50:8\\n' > ${meta.sample}_${meta.replicate}.bigwigtrack.txt
+    printf 'track type=bigWig name=\"${meta.sample}_${meta.replicate}_bw\" bigDataUrl=cloudpath/${meta.sample}_${meta.replicate}.bw description=${meta.sample}_${meta.replicate} visibility=full smoothingWindow=4 windowingFunction=mean maxHeightPixels=100:50:8\\n' \\
+        > ${meta.sample}_${meta.replicate}.bigwigtrack.txt
     
     """
 }

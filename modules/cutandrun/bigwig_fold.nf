@@ -16,7 +16,7 @@ process BIGWIG_FOLD {
     
     module load deeptools
     
-    bigwigCompare --bigwig1 ${samplebigwig} --bigwig2 ${controlbigwig} --operation ratio --binSize 10 --outFileName ${meta.sample}_FC.bw
+    bigwigCompare --bigwig1 ${samplebigwig} --bigwig2 ${controlbigwig} --operation ratio --binSize 10 --outFileName ${meta.sample}_FC.bw --numberOfProcessors $task.cpus
 
     printf 'track type=bigWig name=\"${meta.sample}_FC_bw\" bigDataUrl=cloudpath/${meta.sample}_FC.bw description=${meta.sample} visibility=full smoothingWindow=4 windowingFunction=mean maxHeightPixels=100:50:8\\n' > ${meta.sample}.bigwigtrack.txt
     

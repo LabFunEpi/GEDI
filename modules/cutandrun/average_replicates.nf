@@ -24,7 +24,7 @@ process AVERAGE_REPLICATES {
     
     wiggletools write_bg ${meta.sample}.bg mean ${bedgraphs}
     
-    bedGraphToBigWig ${meta.sample}.bg ${projectDir}/references/chromsizes/${meta.genome} ${meta.sample}.bw
+    bedGraphToBigWig ${meta.sample}.bg ${params.refDir}/chromsizes/${meta.genome} ${meta.sample}.bw
     
     printf 'track type=bigWig name=\"${meta.sample}_bw\" bigDataUrl=cloudpath/${meta.sample}.bw description=${meta.sample} visibility=full smoothingWindow=4 windowingFunction=mean maxHeightPixels=100:50:8\\n' > ${meta.sample}.bigwigtrack.txt
     

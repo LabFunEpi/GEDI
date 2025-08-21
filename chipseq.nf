@@ -9,7 +9,7 @@ include { SEACR_CALLPEAKS } from './modules/cutandrun/seacr_callpeaks.nf'
 include { BIGWIG_FOLD } from './modules/cutandrun/bigwig_fold.nf'
 include { MACS2_CALLPEAKS } from './modules/cutandrun/macs2_callpeaks_control.nf'
 include { BED_TO_BIGBED } from './modules/common/bed_to_bigbed.nf'
-include { EXTRACT_QC } from './modules/cutandrun/extract_qc.nf'
+include { EXTRACT_QC } from './modules/common/extract_qc.nf'
 
 // Primary input
 params.input_csv = "data/samples.csv"

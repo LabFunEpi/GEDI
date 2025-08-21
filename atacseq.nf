@@ -6,6 +6,7 @@ include { DEDUPLICATE } from './modules/common/deduplicate.nf'
 include { COUNT_FRAGMENTS } from './modules/common/count_fragments.nf'
 include { MACS2_CALLPEAKS } from './modules/common/macs2_callpeaks.nf'
 include { BED_TO_BIGBED } from './modules/common/bed_to_bigbed.nf'
+include { EXTRACT_QC } from './modules/common/extract_qc.nf'
 
 // Primary input
 params.input_csv = "data/samples.csv"
