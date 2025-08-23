@@ -1,7 +1,7 @@
-setwd("~/GEDI/chipseq")
-
 library(DESeq2)
 library(tidyverse)
+
+setwd("~/GEDI/demo/chipseq")
 
 ####### Differential analysis DE #######
 
@@ -71,7 +71,6 @@ dds = DESeq(dds)
 res = results(dds)
 
 ### Plot volcano plot
-library(EnhancedVolcano)
 
 EnhancedVolcano(res, lab = rownames(res), x = 'log2FoldChange', y = 'pvalue')
 

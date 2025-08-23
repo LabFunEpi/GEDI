@@ -3,10 +3,10 @@
 library(DESeq2)
 library(vsn)
 
-setwd("~/GEDI/rnaseq")
+setwd("~/GEDI/demo/rnaseq")
 
 ### Read the data and define the sample conditions
-directory = "~/GEDI/rnaseq"
+directory = "~/GEDI/demo/rnaseq"
 
 sampleFiles = c("WT_ES_1_htseq.tab", "WT_ES_2_htseq.tab", 
                 "WT_DE_1_htseq.tab", "WT_DE_2_htseq.tab", 

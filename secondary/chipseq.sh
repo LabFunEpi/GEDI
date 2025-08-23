@@ -1,11 +1,11 @@
 
-mkdir ~/GEDI/chipseq
+mkdir ~/GEDI/demo/chipseq
 
-cd ~/GEDI/chipseq
+cd ~/GEDI/demo/chipseq
 
 gcloud auth login --no-launch-browser
 
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/chipseq/beds/*.macs2.bed .
+gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/chipseq/beds/FOXA2*.macs2.bed .
 
 ls
 
@@ -55,10 +55,12 @@ cd counting
 
 gcloud auth login --no-launch-browser
 
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/GEDI/results/chipseq/bams/FOXA2_ChIP* .
+gcloud config set project ml-fpt-rsa-maia-s-p-1367
 
-cp ~/GEDI/chipseq/merged_DE.bed .
-cp ~/GEDI/chipseq/merged_PP.bed .
+gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/chipseq/bams/FOXA2_ChIP* .
+
+cp ~/GEDI/demo/chipseq/merged_DE.bed .
+cp ~/GEDI/demo/chipseq/merged_PP.bed .
 
 cp ~/GEDI/secondary/chipseq_counting.sh .
 
@@ -66,9 +68,9 @@ sbatch chipseq_counting.sh
 
 squeue --me
 
-cp counts_DE.tsv ~/GEDI/chipseq/
+cp counts_DE.tsv ~/GEDI/demo/chipseq/
 
-cp counts_PP.tsv ~/GEDI/chipseq/
+cp counts_PP.tsv ~/GEDI/demo/chipseq/
 
 ### Continue analysis in chipseq.R ...
 
@@ -122,14 +124,14 @@ plotHeatmap -m FOXA2_hDHMR.tab.gz \
 ###
 
 computeMatrix reference-point -S FOXA2_ChIP_WT_PP_FC.bw \
-                              -R ~/GEDI/atacseq/merged.bed \
+                              -R ~/GEDI/demo/atacseq/merged.bed \
                               --referencePoint center \
                               -b 5000 -a 5000 -p 16 \
                               --outFileNameMatrix FOXK2_ATAC_all \
                               --outFileName FOXK2_ATAC_all.tab.gz &
 
 computeMatrix reference-point -S FOXA2_ChIP_WT_PP_FC.bw \
-                              -R ~/GEDI/atacseq/ATAC_down_in_PP.bed \
+                              -R ~/GEDI/demo/atacseq/ATAC_down_in_PP.bed \
                               --referencePoint center \
                               -b 5000 -a 5000 -p 16 \
                               --outFileNameMatrix FOXK2_ATAC_down \

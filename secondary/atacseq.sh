@@ -1,9 +1,11 @@
 
-mkdir ~/GEDI/atacseq
+mkdir ~/GEDI/demo/atacseq
 
-cd ~/GEDI/atacseq
+cd ~/GEDI/demo/atacseq
 
 gcloud auth login --no-launch-browser
+
+gcloud config set project ml-fpt-rsa-maia-s-p-1367
 
 gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/atacseq/beds/* .
 gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/atacseq/bigwigs/* .
@@ -50,7 +52,7 @@ gcloud auth login --no-launch-browser
 
 gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/atacseq/bams/* .
 
-cp ~/GEDI/atacseq/merged.bed .
+cp ~/GEDI/demo/atacseq/merged.bed .
 
 cp ~/GEDI/secondary/atacseq_counting.sh .
 
@@ -60,7 +62,7 @@ squeue --me
 
 # After that completes ... 
 
-cp counts.tsv ~/GEDI/atacseq/
+cp counts.tsv ~/GEDI/demo/atacseq/
 
 ### Continue analysis in atacseq.R ...
 

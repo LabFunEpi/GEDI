@@ -2,7 +2,7 @@ library(magrittr)
 library(tidyverse)
 library(Signac)
 
-setwd("~/GEDI/atacseq")
+setwd("~/GEDI/demo/atacseq")
 
 WT_1 = read.table("WT_PP_1.macs2.bed") %>% 
   set_colnames(c("chr", "start", "end", "id"))
@@ -21,7 +21,6 @@ TKO_2 = read.table("TKO_PP_2.macs2.bed") %>%
   set_colnames(c("chr", "start", "end", "id"))
 
 ####### Visualize #######
-library(Signac)
 hg38_annotations = readRDS("hg38.rds")
 
 genome(atac_small) = "hg38"
