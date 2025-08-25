@@ -1,0 +1,5 @@
+sample,genome,replicate,fastq_1,fastq_2
+WT_PP,hg38,1,GSM4387082_1.fastq.gz,GSM4387082_2.fastq.gz
+WT_PP,hg38,2,GSM4387083_1.fastq.gz,GSM4387083_2.fastq.gz
+TKO_PP,hg38,1,GSM4387084_1.fastq.gz,GSM4387084_2.fastq.gz
+TKO_PP,hg38,2,GSM4387085_1.fastq.gz,GSM4387085_2.fastq.gz

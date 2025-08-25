@@ -67,6 +67,23 @@ ls results
 ls results/counts
 less results/counts/Sample1_htseq.tab
 
+# Troubleshooting Nextflow runs
+nextflow log
+
+# Running Nextflow pipeline with Slurm (and in background)
+nextflow -bg -q run rnaseq.nf
+
+# Checking the Slurm jobs running in the background
+squeue --me
+
+# Cleaning up after completion of a pipeline
+# First, copy the results to storage bucket for use in secondary analysis
+gcloud storage cp -r results/ gs://... 
+
+# Remove everything related to this run
+rm -rf .nextflow* work/ results/
+
+
 ### Continue secondary analysis in RStudio
 
 # https://rstudio-hpc-01.mayo.edu/
