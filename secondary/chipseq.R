@@ -97,11 +97,58 @@ write.table(FOXA2_down_in_PP, "FOXA2_down_in_PP.bed", sep = "\t", row.names = FA
 ###
 ###
 
-
-
-
 ### Alternative to DESeq2, you could use DiffBind to do differential binding analysis
 # https://hbctraining.github.io/Intro-to-ChIPseq/lessons/08_diffbind_differential_peaks.html
+
+### Coverage plot (Putting it all together)
+
+library(Signac)
+
+hg38_annotations = readRDS("~/GEDI/demo/atacseq/hg38.rds")
+
+genome(atac_small) = "hg38"
+Annotation(atac_small) = hg38_annotations
+
+my_window = "chr7-127610289-127625877"
+gene_plot <- AnnotationPlot(atac_small, region = my_window)
+
+H3K4me1_WT_file = "H3K4me1_WT_PP_FC.bw"
+H3K27ac_WT_file = "H3K27ac_WT_PP_FC.bw"
+FOXA2_WT_file = "FOXA2_ChIP_WT_PP_FC.bw"
+ATAC_WT_file = "~/GEDI/demo/atacseq/WT_PP_1.bw"
+ATAC_TKO_file = "~/GEDI/demo/atacseq/TKO_PP_1.bw"
+WGBS_WT_file = "~/GEDI/demo/dnamethyl/GSM4387092_WGBS_WT_PP.bw"
+WGBS_TKO_file = "~/GEDI/demo/dnamethyl/GSM4387093_WGBS_TKO_PP.bw"
+
+H3K4me1_WT <- BigwigTrack(region = my_window, bigwig = H3K4me1_WT_file, y_label = "H3K4me1", smooth = 250, downsample.rate = 1, ymax = 3) + 
+  scale_fill_manual(values = c("#833a8c"))
+H3K27ac_WT <- BigwigTrack(region = my_window, bigwig = H3K27ac_WT_file, y_label = "H3K27ac", smooth = 250, downsample.rate = 1, ymax = 20) + 
+  scale_fill_manual(values = c("#5e5d35"))
+FOXA2_WT <- BigwigTrack(region = my_window, bigwig = FOXA2_WT_file, y_label = "FOXA2", smooth = 250, downsample.rate = 1, ymax = 10) + 
+  scale_fill_manual(values = c("#5f1319"))
+ATAC <- BigwigTrack(region = my_window, bigwig = list(WT = ATAC_WT_file, TKO = ATAC_TKO_file), smooth = 250, downsample.rate = 1, bigwig.scale = "separate", ymax = 11) + 
+  scale_fill_manual(values = c("#254a9b", "#254a9b"))
+ATAC_WT <- BigwigTrack(region = my_window, bigwig = ATAC_WT_file, y_label = "ATAC_WT", smooth = 250, downsample.rate = 1, ymax = 6) + 
+  scale_fill_manual(values = c("#254a9b"))
+ATAC_TKO <- BigwigTrack(region = my_window, bigwig = ATAC_TKO_file, y_label = "ATAC_TKO", smooth = 250, downsample.rate = 1, ymax = 6) + 
+  scale_fill_manual(values = c("#254a9b"))
+WGBS_WT <- BigwigTrack(region = my_window, bigwig = WGBS_WT_file, y_label = "WGBS_WT", smooth = 250, downsample.rate = 1, ymax = 1) + 
+  scale_fill_manual(values = c("black"))
+WGBS_TKO <- BigwigTrack(region = my_window, bigwig = WGBS_TKO_file, y_label = "WGBS_TKO", smooth = 250, downsample.rate = 1, ymax = 1) + 
+  scale_fill_manual(values = c("black"))
+
+CombineTracks(plotlist = list(
+  gene_plot, 
+  H3K4me1_WT, 
+  H3K27ac_WT, 
+  FOXA2_WT, 
+  ATAC, 
+  WGBS_WT, 
+  WGBS_TKO), 
+  heights = c(1, 1, 1, 1, 2, 1, 1))
+
+
+
 
 
 

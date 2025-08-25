@@ -1,11 +1,14 @@
 
-mkdir ~/GEDI/demo/chipseq
+### You'll run this if you've generated results from primary analysis in fslustre with nextflow
+
+# mkdir -p ~/GEDI/demo/chipseq
+# cd ~/GEDI/demo/chipseq
+# cp -r /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/GEDI/results/beds/FOXA2*.macs2.bed .
+# cp -r /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/GEDI/results/bigwigs/FOXA2*FC.bw .
+
+### We'll take a shortcut; all the required files from primary analysis are compiled in the demo folder
 
 cd ~/GEDI/demo/chipseq
-
-gcloud auth login --no-launch-browser
-
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/chipseq/beds/FOXA2*.macs2.bed .
 
 ls
 
@@ -42,9 +45,13 @@ bedtools merge -i concatenated_sorted.bed > merged_PP.bed
 wc -l merged_DE.bed
 wc -l merged_PP.bed
 
+### Counting reads per peak
+
 ############################################################################
 ### Important!!! Run the following in Slurm project SSH (NOT IN RStudio) ###
 ############################################################################
+
+# You can skip this if you want (for the demo); counts files are already in the demo folder
 
 # Remember to change this folder name to yours
 cd /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/
@@ -80,8 +87,6 @@ cp counts_PP.tsv ~/GEDI/demo/chipseq/
 
 ### ... continuing from chipseq.R - Make heatmaps using DeepTools
 
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/chipseq/bigwigs/FOXA2*FC.bw .
-
 module load deeptools
 
 computeMatrix reference-point -S FOXA2_ChIP_WT_DE_FC.bw \
@@ -101,8 +106,6 @@ plotHeatmap -m FOXA2.tab.gz \
             -out FOXA2.pdf
 
 ###
-
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/supplementary/* .
 
 computeMatrix reference-point -S FOXA2_ChIP_WT_DE_FC.bw \
                                  FOXA2_ChIP_WT_GT_FC.bw \
@@ -147,5 +150,18 @@ plotHeatmap -m FOXK2_ATAC_down.tab.gz \
             --colorList 'white,red' \
             --sortRegions descend \
             -out FOXK2_ATAC_down.pdf &
+
+### Motif analysis
+# http://homer.ucsd.edu/homer/ngs/peakMotifs.html
+
+awk -v OFS="\t" '{print $0,"+"}' ~/GEDI/demo/atacseq/ATAC_down_in_PP.bed > ATAC_down_in_PP_4col.bed
+
+module load homer
+
+findMotifsGenome.pl ATAC_down_in_PP_4col.bed \
+  /usr/local/biotools/homer/4.11/data/genomes/hg38 \
+  ./motifAnalysis \
+  -size 200 \
+  -preparsedDir ./preparsed
 
 

@@ -1,17 +1,17 @@
 
-mkdir ~/GEDI/demo/atacseq
+### You'll run this if you've generated results from primary analysis in fslustre with nextflow
+
+# mkdir -p ~/GEDI/demo/atacseq
+# cd ~/GEDI/demo/atacseq
+# cp -r /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/GEDI/results/beds/* .
+# cp -r /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/GEDI/results/bigwigs/* .
+# cp -r /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/GEDI/references/annotations/hg38.rds .
+
+### We'll take a shortcut; all the required files from primary analysis are compiled in the demo folder
 
 cd ~/GEDI/demo/atacseq
 
-gcloud auth login --no-launch-browser
-
-gcloud config set project ml-fpt-rsa-maia-s-p-1367
-
-gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/atacseq/beds/* .
-gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/results/atacseq/bigwigs/* .
-gcloud storage cp gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/references/annotations/hg38.rds .
-
-module load bedtools
+### Intro to BED files
 
 wc -l *.bed
 
@@ -22,6 +22,8 @@ wc -l *.bed
 ###
 
 ### ... continuing from atacseq.R to create a consensus (MERGE)
+
+module load bedtools
 
 bedtools intersect -a WT_PP_1.macs2.bed -b WT_PP_2.macs2.bed -u | wc -l
 bedtools intersect -a TKO_PP_1.macs2.bed -b TKO_PP_2.macs2.bed -u | wc -l
@@ -37,9 +39,13 @@ bedtools merge -i pooled_sorted.bed > merged.bed
 
 wc -l merged.bed
 
+### Counting reads per peak in merged.bed
+
 ############################################################################
 ### Important!!! Run the following in Slurm project SSH (NOT IN RStudio) ###
 ############################################################################
+
+# You can skip this if you want (for the demo); counts.tsv is already in the demo folder
 
 # Remember to change this folder name to yours
 cd /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/
@@ -61,7 +67,6 @@ sbatch atacseq_counting.sh
 squeue --me
 
 # After that completes ... 
-
 cp counts.tsv ~/GEDI/demo/atacseq/
 
 ### Continue analysis in atacseq.R ...

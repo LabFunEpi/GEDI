@@ -24,3 +24,4 @@ multiBamSummary BED-file --BED merged_PP.bed \
      FOXA2_ChIP_TKO_PP_2.NoDup.bam \
   -o results_PP.npz --outRawCounts counts_PP.tsv -p 8
 
+# https://deeptools.readthedocs.io/en/develop/content/tools/multiBamSummary.html

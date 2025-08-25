@@ -126,15 +126,3 @@ plotRegionGeneAssociations(GREATres)
 
 getEnrichmentTable(GREATres) %>% head()
 
-############ Motif enrichments ??? ####
-
-
-
-
-
-
-
-
-
-
-

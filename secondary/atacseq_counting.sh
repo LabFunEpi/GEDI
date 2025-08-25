@@ -13,3 +13,5 @@ cd /fslustre/labs/ext_mohammedismail_wazim_mayo_ed/counting/
 multiBamSummary BED-file --BED merged.bed \
   -b WT_PP_1.NoDup.bam WT_PP_2.NoDup.bam TKO_PP_1.NoDup.bam TKO_PP_2.NoDup.bam \
   -o results.npz --outRawCounts counts.tsv -p 8
+
+# https://deeptools.readthedocs.io/en/develop/content/tools/multiBamSummary.html
