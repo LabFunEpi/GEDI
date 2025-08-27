@@ -1,6 +1,6 @@
 
 # https://groups.google.com/g/methylkit_discussion/c/7cX28UgQ0js?pli=1
-remotes::install_version("data.table", version = "1.16")
+# remotes::install_version("data.table", version = "1.16")
 library(data.table, lib.loc="~/R/x86_64-pc-linux-gnu-library/4.4")
 
 packageVersion("data.table")
@@ -24,7 +24,7 @@ myobj=methRead(file.list,
 getMethylationStats(myobj[[1]],plot=TRUE,both.strands=FALSE)
 getMethylationStats(myobj[[2]],plot=TRUE,both.strands=FALSE)
 
-meth=unite(myobj, destrand=FALSE)
+meth=methylKit::unite(myobj, destrand=FALSE)
 
 getCorrelation(meth,plot=TRUE)
 
@@ -47,4 +47,18 @@ myDiff %>% filter(pvalue < 0.05 & meth.diff > 50) %>% dim()
 myDiff %>% filter(pvalue < 0.05 & meth.diff < -50) %>% dim()
 
 
+### ReMapEnrich analysis 
+
+library(devtools)
+install_github("remap-cisreg/ReMapEnrich")
+library(ReMapEnrich)
+
+setwd("~/GEDI/demo/dnamethyl")
+
+query <- bedToGranges("~/GEDI/demo/dnamethyl/Ex2_GEDI_HyperDMR.bed")
+remapCatalog <- bedToGranges("~/GEDI/demo/dnamethyl/Ex2_remap2022_pancreatic-progenitor_nr_macs2_hg38_v1_0.bed")
+
+enrichment.df <- enrichment(query, remapCatalog)
+
+enrichmentDotPlot(enrichment.df)
 

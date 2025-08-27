@@ -8,4 +8,10 @@
 
 ### We'll take a shortcut; all the required files from primary analysis are compiled in the demo folder
 
+gcloud auth login --no-launch-browser
+gcloud config set project ml-fpt-rsa-maia-s-p-1367
+
+cd ~
+gcloud storage cp -r gs://ml-phi-proj-rsa-us-central1-p-15fe/REGS6700/demo ./GEDI
+
 cd ~/GEDI/demo/dnamethyl
