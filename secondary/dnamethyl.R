@@ -1,9 +1,10 @@
 
 # https://groups.google.com/g/methylkit_discussion/c/7cX28UgQ0js?pli=1
-# remotes::install_version("data.table", version = "1.16")
-library(data.table, lib.loc="~/R/x86_64-pc-linux-gnu-library/4.4")
+remotes::install_version("data.table", version = "1.16")
 
+library(data.table, lib.loc="~/R/x86_64-pc-linux-gnu-library/4.4")
 packageVersion("data.table")
+
 library(methylKit)
 
 library(magrittr)
@@ -32,7 +33,7 @@ myDiff=calculateDiffMeth(meth)
 
 myDiff = myDiff %>% data.frame() %>%
   mutate(negLogQvalue = -log10(qvalue)) %>%
-  unite(chr:start, col = "CpGsite", sep = "-")
+  tidyr::unite(chr:start, col = "CpGsite", sep = "-")
 
 ### Plot volcano plot
 
@@ -51,9 +52,8 @@ myDiff %>% filter(pvalue < 0.05 & meth.diff < -50) %>% dim()
 
 library(devtools)
 install_github("remap-cisreg/ReMapEnrich")
-library(ReMapEnrich)
 
-setwd("~/GEDI/demo/dnamethyl")
+library(ReMapEnrich)
 
 query <- bedToGranges("~/GEDI/demo/dnamethyl/Ex2_GEDI_HyperDMR.bed")
 remapCatalog <- bedToGranges("~/GEDI/demo/dnamethyl/Ex2_remap2022_pancreatic-progenitor_nr_macs2_hg38_v1_0.bed")
@@ -62,3 +62,12 @@ enrichment.df <- enrichment(query, remapCatalog)
 
 enrichmentDotPlot(enrichment.df)
 
+enrichment.df <- enrichment.df %>% mutate(category = factor(category, levels = rev(enrichment.df$category)))
+
+library(cowplot)
+
+ggplot(enrichment.df %>% slice_head(n = 50)) +
+  geom_point(aes(x = mapped.peaks.ratio, y = category, size = nb.overlaps, color = q.significance)) +
+  scale_color_gradient(low = "#6699FF", high = "#FF5050") +
+  theme_cowplot() + theme(axis.title.y = element_blank()) +
+  ggtitle("ReMapEnrich")
